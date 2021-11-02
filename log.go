@@ -113,6 +113,10 @@ type Logger struct {
 	module string
 }
 
+func (l *Logger) WithField(key string, value interface{}) *logrus.Entry {
+	return l.logger.WithField(key, value)
+}
+
 // Debug implements the logger interface
 func (l *Logger) Debug(v ...interface{}) {
 	if l.level < logrus.DebugLevel {
