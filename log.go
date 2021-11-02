@@ -113,7 +113,18 @@ type Logger struct {
 	module string
 }
 
-func (l *Logger) WithField(key string, value interface{}) *logrus.Entry {
+type Entry struct {
+	logrus.Entry
+}
+
+func (entry *Entry) Clitical(v ...interface{}) {
+	if entry.Logger.IsLevelEnabled(logrus.FatalLevel) {
+		entry.log(logrus.FatalLevel, fmt.Sprint(args...))
+	}
+	entry.Logger.Exit(1)
+}
+
+func (l *Logger) WithField(key string, value interface{}) *Entry {
 	return l.logger.WithField(key, value)
 }
 
