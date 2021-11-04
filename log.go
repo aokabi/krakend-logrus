@@ -114,18 +114,12 @@ type Logger struct {
 }
 
 type Entry struct {
-	logrus.Entry
+	*logrus.Entry
 }
 
-func (entry *Entry) Clitical(v ...interface{}) {
-	if entry.Logger.IsLevelEnabled(logrus.FatalLevel) {
-		entry.log(logrus.FatalLevel, fmt.Sprint(args...))
-	}
-	entry.Logger.Exit(1)
-}
 
 func (l *Logger) WithField(key string, value interface{}) *Entry {
-	return l.logger.WithField(key, value)
+	return &Entry{l.logger.WithField(key, value)}
 }
 
 // Debug implements the logger interface
