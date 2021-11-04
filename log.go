@@ -113,6 +113,10 @@ type Logger struct {
 	module string
 }
 
+func (l *Logger) AddHook(hook logrus.Hook) {
+	l.logger.AddHook(hook)
+}
+
 func (l *Logger) WithField(key string, value interface{}) *logrus.Entry {
 	return l.logger.WithField(key, value)
 }
