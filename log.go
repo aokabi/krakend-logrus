@@ -117,6 +117,9 @@ type Entry struct {
 	*logrus.Entry
 }
 
+func (entry *Entry) Clitical(args ...interface{}) {
+	entry.Entry.Error(args...)
+}
 
 func (l *Logger) WithField(key string, value interface{}) *Entry {
 	return &Entry{l.logger.WithField(key, value)}
