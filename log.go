@@ -117,7 +117,7 @@ type Entry struct {
 	*logrus.Entry
 }
 
-func (entry *Entry) Clitical(args ...interface{}) {
+func (entry *Entry) Critical(args ...interface{}) {
 	entry.Entry.Error(args...)
 }
 
