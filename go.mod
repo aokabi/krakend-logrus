@@ -7,7 +7,7 @@ require (
 	github.com/sirupsen/logrus v1.1.0
 )
 
-replace github.com/devopsfaith/krakend-logrus => github.com/aokabi/krakend-logrus v0.0.6
+replace github.com/devopsfaith/krakend-logrus => github.com/aokabi/krakend-logrus v0.0.8
 
 require (
 	github.com/konsorten/go-windows-terminal-sequences v0.0.0-20180402223658-b729f2633dfe // indirect

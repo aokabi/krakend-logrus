@@ -113,16 +113,8 @@ type Logger struct {
 	module string
 }
 
-type Entry struct {
-	*logrus.Entry
-}
-
-func (entry *Entry) Critical(args ...interface{}) {
-	entry.Entry.Error(args...)
-}
-
-func (l *Logger) WithField(key string, value interface{}) *Entry {
-	return &Entry{l.logger.WithField(key, value)}
+func (l *Logger) WithField(key string, value interface{}) *logrus.Entry {
+	return l.logger.WithField(key, value)
 }
 
 // Debug implements the logger interface
@@ -146,7 +138,7 @@ func (l *Logger) Warning(v ...interface{}) {
 	if l.level < logrus.WarnLevel {
 		return
 	}
-	l.logger.WithField("module", l.module).Warning(v...)
+	l.logger.Warning(v...)
 }
 
 // Error implements the logger interface
