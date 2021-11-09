@@ -171,6 +171,10 @@ func (l *Logger) Fatal(v ...interface{}) {
 	l.logger.WithField("module", l.module).Fatal(v...)
 }
 
+func (l *Logger) NewEntry() *Entry {
+	return &Entry{logrus.NewEntry(l.logger)}
+}
+
 var logLevels = map[string]logrus.Level{
 	"DEBUG":    logrus.DebugLevel,
 	"INFO":     logrus.InfoLevel,
