@@ -114,7 +114,7 @@ type Logger struct {
 }
 
 type Entry struct {
-	logrus.Entry
+	*logrus.Entry
 }
 
 func (entry *Entry) Critical(args ...interface{}) {
@@ -125,8 +125,8 @@ func (l *Logger) AddHook(hook logrus.Hook) {
 	l.logger.AddHook(hook)
 }
 
-func (l *Logger) WithField(key string, value interface{}) *logrus.Entry {
-	return l.logger.WithField(key, value)
+func (l *Logger) WithField(key string, value interface{}) *Entry {
+	return &Entry{l.logger.WithField(key, value)}
 }
 
 // Debug implements the logger interface
