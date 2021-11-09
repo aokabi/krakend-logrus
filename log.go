@@ -113,6 +113,14 @@ type Logger struct {
 	module string
 }
 
+type Entry struct {
+	logrus.Entry
+}
+
+func (entry *Entry) Critical(args ...interface{}) {
+	entry.Error(args...)
+}
+
 func (l *Logger) AddHook(hook logrus.Hook) {
 	l.logger.AddHook(hook)
 }
