@@ -118,6 +118,7 @@ type Entry struct {
 }
 
 func (entry *Entry) Critical(args ...interface{}) {
+	println("debug heloooooo")
 	entry.Error(args...)
 }
 
@@ -151,7 +152,6 @@ func (l *Logger) Info(v ...interface{}) {
 
 // Warning implements the logger interface
 func (l *Logger) Warning(v ...interface{}) {
-	println("debuggggggggggg")
 	if l.level < logrus.WarnLevel {
 		return
 	}
