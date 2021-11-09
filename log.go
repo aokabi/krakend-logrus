@@ -121,6 +121,10 @@ func (entry *Entry) Critical(args ...interface{}) {
 	entry.Error(args...)
 }
 
+func (entry *Entry) WithField(key string, value interface{}) *Entry {
+	return &Entry{entry.Entry.WithField(key, value)}
+}
+
 func (l *Logger) AddHook(hook logrus.Hook) {
 	l.logger.AddHook(hook)
 }
