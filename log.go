@@ -124,7 +124,7 @@ func (entry *Entry) Critical(args ...interface{}) {
 func (entry *Entry) Warning(args ...interface{}) {
 	println("debug heloooooo")
 	entry.Entry.Warning(args...)
-	println(entry.Data)
+	fmt.Println(entry.Data)
 }
 
 func (entry *Entry) WithField(key string, value interface{}) *Entry {
