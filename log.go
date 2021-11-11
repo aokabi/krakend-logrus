@@ -124,11 +124,13 @@ func (entry *Entry) Critical(args ...interface{}) {
 func (entry *Entry) Warning(args ...interface{}) {
 	println("debug heloooooo")
 	entry.Entry.Warning(args...)
-	fmt.Println(entry.Data)
+	fmt.Println(entry.Entry.Data)
 }
 
 func (entry *Entry) WithField(key string, value interface{}) *Entry {
-	return &Entry{entry.Entry.WithField(key, value)}
+	tmp := &Entry{entry.Entry.WithField(key, value)}
+	fmt.Println(tmp.Data)
+	return tmp
 }
 
 func (l *Logger) AddHook(hook logrus.Hook) {
