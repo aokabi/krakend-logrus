@@ -121,6 +121,11 @@ func (entry *Entry) Critical(args ...interface{}) {
 	println("debug heloooooo")
 	entry.Error(args...)
 }
+func (entry *Entry) Warning(args ...interface{}) {
+	println("debug heloooooo")
+	entry.Entry.Warning(args...)
+	println(entry.Data)
+}
 
 func (entry *Entry) WithField(key string, value interface{}) *Entry {
 	return &Entry{entry.Entry.WithField(key, value)}
