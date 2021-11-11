@@ -129,7 +129,7 @@ func (entry *Entry) Warning(args ...interface{}) {
 
 func (entry *Entry) WithField(key string, value interface{}) *Entry {
 	tmp := &Entry{entry.Entry.WithField(key, value)}
-	fmt.Println(tmp.Data)
+	fmt.Println("entry:", tmp.Data)
 	return tmp
 }
 
