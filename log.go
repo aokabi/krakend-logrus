@@ -18,6 +18,19 @@ const Namespace = "github_com/devopsfaith/krakend-logrus"
 // ErrWrongConfig is the error returned when there is no config under the namespace
 var ErrWrongConfig = errors.New("getting the extra config for the krakend-logrus module")
 
+type Level int
+
+const (
+	DEBUG     = 100
+	INFO      = 200
+	NOTICE    = 300
+	WARNING   = 400
+	ERROR     = 500
+	CRITICAL  = 600
+	ALERT     = 700
+	EMERGENCY = 800
+)
+
 // NewLogger returns a krakend logger wrapping a logrus logger
 func NewLogger(cfg config.ExtraConfig, ws ...io.Writer) (*Logger, error) {
 	logConfig, ok := ConfigGetter(cfg).(Config)
@@ -38,7 +51,6 @@ func NewLogger(cfg config.ExtraConfig, ws ...io.Writer) (*Logger, error) {
 	return &Logger{
 		logger: l,
 		level:  level,
-		module: logConfig.Module,
 	}, nil
 }
 
@@ -47,7 +59,6 @@ func WrapLogger(l *logrus.Logger, module string) *Logger {
 	return &Logger{
 		logger: l,
 		level:  l.Level,
-		module: module,
 	}
 }
 
@@ -110,77 +121,41 @@ type Config struct {
 type Logger struct {
 	logger *logrus.Logger
 	level  logrus.Level
-	module string
-}
-
-type Entry struct {
-	*logrus.Entry
-}
-
-func (entry *Entry) Critical(args ...interface{}) {
-	println("debug heloooooo")
-	entry.Error(args...)
-}
-func (entry *Entry) Warning(args ...interface{}) {
-	println("debug heloooooo")
-	entry.Entry.Warning(args...)
-	fmt.Println(entry.Entry.Data)
-}
-
-func (entry *Entry) WithField(key string, value interface{}) *Entry {
-	tmp := &Entry{entry.Entry.WithField(key, value)}
-	fmt.Println("entry:", tmp.Data)
-	return tmp
-}
-
-func (l *Logger) AddHook(hook logrus.Hook) {
-	l.logger.AddHook(hook)
 }
 
 func (l *Logger) WithField(key string, value interface{}) *Entry {
 	return &Entry{l.logger.WithField(key, value)}
 }
 
-// Debug implements the logger interface
 func (l *Logger) Debug(v ...interface{}) {
-	if l.level < logrus.DebugLevel {
-		return
-	}
-	l.logger.WithField("module", l.module).Debug(v...)
+	l.logger.Log(DEBUG, v...)
 }
-
-// Info implements the logger interface
 func (l *Logger) Info(v ...interface{}) {
-	if l.level < logrus.InfoLevel {
-		return
-	}
-	l.logger.WithField("module", l.module).Info(v...)
+	l.logger.Log(INFO, v...)
 }
 
-// Warning implements the logger interface
+func (l *Logger) Notice(v ...interface{}) {
+	l.logger.Log(NOTICE, v...)
+}
+
 func (l *Logger) Warning(v ...interface{}) {
-	if l.level < logrus.WarnLevel {
-		return
-	}
-	l.logger.Warning(v...)
+	l.logger.Log(WARNING, v...)
 }
 
-// Error implements the logger interface
 func (l *Logger) Error(v ...interface{}) {
-	if l.level < logrus.ErrorLevel {
-		return
-	}
-	l.logger.WithField("module", l.module).Error(v...)
+	l.logger.Log(ERROR, v...)
 }
 
-// Critical implements the logger interface but demotes to the error level
 func (l *Logger) Critical(v ...interface{}) {
-	l.logger.WithField("module", l.module).Error(v...)
+	l.logger.Log(CRITICAL, v...)
 }
 
-// Fatal implements the logger interface
-func (l *Logger) Fatal(v ...interface{}) {
-	l.logger.WithField("module", l.module).Fatal(v...)
+func (l *Logger) Alert(v ...interface{}) {
+	l.logger.Log(ALERT, v...)
+}
+
+func (l *Logger) Emergency(v ...interface{}) {
+	l.logger.Log(EMERGENCY, v...)
 }
 
 func (l *Logger) NewEntry() *Entry {
@@ -188,9 +163,12 @@ func (l *Logger) NewEntry() *Entry {
 }
 
 var logLevels = map[string]logrus.Level{
-	"DEBUG":    logrus.DebugLevel,
-	"INFO":     logrus.InfoLevel,
-	"WARNING":  logrus.WarnLevel,
-	"ERROR":    logrus.ErrorLevel,
-	"CRITICAL": logrus.FatalLevel,
+	"DEBUG":     DEBUG,
+	"INFO":      INFO,
+	"NOTICE":    NOTICE,
+	"WARNING":   WARNING,
+	"ERROR":     ERROR,
+	"CRITICAL":  CRITICAL,
+	"ALERT":     ALERT,
+	"EMERGENCY": EMERGENCY,
 }
