@@ -21,14 +21,14 @@ var ErrWrongConfig = errors.New("getting the extra config for the krakend-logrus
 type Level int
 
 const (
-	DEBUG     = 100
-	INFO      = 200
-	NOTICE    = 300
-	WARNING   = 400
-	ERROR     = 500
-	CRITICAL  = 600
-	ALERT     = 700
-	EMERGENCY = 800
+	EMERGENCY = iota + 1
+	ALERT     = iota
+	CRITICAL  = iota
+	ERROR     = iota
+	WARNING   = iota
+	NOTICE    = iota
+	INFO      = iota
+	DEBUG     = iota
 )
 
 // NewLogger returns a krakend logger wrapping a logrus logger
@@ -130,6 +130,7 @@ func (l *Logger) WithField(key string, value interface{}) *Entry {
 func (l *Logger) Debug(v ...interface{}) {
 	l.logger.Log(DEBUG, v...)
 }
+
 func (l *Logger) Info(v ...interface{}) {
 	l.logger.Log(INFO, v...)
 }
