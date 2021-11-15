@@ -18,19 +18,6 @@ const Namespace = "github_com/devopsfaith/krakend-logrus"
 // ErrWrongConfig is the error returned when there is no config under the namespace
 var ErrWrongConfig = errors.New("getting the extra config for the krakend-logrus module")
 
-type Level int
-
-const (
-	EMERGENCY = iota + 1
-	ALERT     = iota
-	CRITICAL  = iota
-	ERROR     = iota
-	WARNING   = iota
-	NOTICE    = iota
-	INFO      = iota
-	DEBUG     = iota
-)
-
 // NewLogger returns a krakend logger wrapping a logrus logger
 func NewLogger(cfg config.ExtraConfig, ws ...io.Writer) (*Logger, error) {
 	logConfig, ok := ConfigGetter(cfg).(Config)
@@ -128,35 +115,29 @@ func (l *Logger) WithField(key string, value interface{}) *Entry {
 }
 
 func (l *Logger) Debug(v ...interface{}) {
-	l.logger.Log(DEBUG, v...)
+	l.logger.Log(logrus.DebugLevel, v...)
 }
 
 func (l *Logger) Info(v ...interface{}) {
-	l.logger.Log(INFO, v...)
+	l.logger.Log(logrus.InfoLevel, v...)
 }
 
-func (l *Logger) Notice(v ...interface{}) {
-	l.logger.Log(NOTICE, v...)
-}
 
 func (l *Logger) Warning(v ...interface{}) {
-	l.logger.Log(WARNING, v...)
+	l.logger.Log(logrus.WarnLevel, v...)
 }
 
 func (l *Logger) Error(v ...interface{}) {
-	l.logger.Log(ERROR, v...)
+	l.logger.Log(logrus.ErrorLevel, v...)
 }
 
+// Critical implements the logger interface but demotes to the error level
 func (l *Logger) Critical(v ...interface{}) {
-	l.logger.Log(CRITICAL, v...)
+	l.logger.Log(logrus.ErrorLevel, v...)
 }
 
-func (l *Logger) Alert(v ...interface{}) {
-	l.logger.Log(ALERT, v...)
-}
-
-func (l *Logger) Emergency(v ...interface{}) {
-	l.logger.Log(EMERGENCY, v...)
+func (l *Logger) Fatal(v ...interface{}) {
+	l.logger.Log(logrus.FatalLevel, v...)
 }
 
 func (l *Logger) NewEntry() *Entry {
@@ -164,12 +145,9 @@ func (l *Logger) NewEntry() *Entry {
 }
 
 var logLevels = map[string]logrus.Level{
-	"DEBUG":     DEBUG,
-	"INFO":      INFO,
-	"NOTICE":    NOTICE,
-	"WARNING":   WARNING,
-	"ERROR":     ERROR,
-	"CRITICAL":  CRITICAL,
-	"ALERT":     ALERT,
-	"EMERGENCY": EMERGENCY,
+	"DEBUG":    logrus.DebugLevel,
+	"INFO":     logrus.InfoLevel,
+	"WARNING":  logrus.WarnLevel,
+	"ERROR":    logrus.ErrorLevel,
+	"CRITICAL": logrus.FatalLevel,
 }

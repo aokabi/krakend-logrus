@@ -13,35 +13,27 @@ type Entry struct {
 }
 
 func (e *Entry) Debug(v ...interface{}) {
-	e.Log(DEBUG, v...)
+	e.Log(logrus.DebugLevel, v...)
 }
 
 func (e *Entry) Info(v ...interface{}) {
-	e.Log(INFO, v...)
-}
-
-func (e *Entry) Notice(v ...interface{}) {
-	e.Log(NOTICE, v...)
+	e.Log(logrus.InfoLevel, v...)
 }
 
 func (e *Entry) Warning(v ...interface{}) {
-	e.Log(WARNING, v...)
+	e.Log(logrus.WarnLevel, v...)
 }
 
 func (e *Entry) Error(v ...interface{}) {
-	e.Log(ERROR, v...)
+	e.Log(logrus.ErrorLevel, v...)
 }
 
 func (e *Entry) Critical(v ...interface{}) {
-	e.Log(CRITICAL, v...)
+	e.Log(logrus.ErrorLevel, v...)
 }
 
-func (e *Entry) Alert(v ...interface{}) {
-	e.Log(ALERT, v...)
-}
-
-func (e *Entry) Emergency(v ...interface{}) {
-	e.Log(EMERGENCY, v...)
+func (e *Entry) Fatal(v ...interface{}) {
+	e.Log(logrus.FatalLevel, v...)
 }
 
 func (entry *Entry) WithField(key string, value interface{}) *Entry {
